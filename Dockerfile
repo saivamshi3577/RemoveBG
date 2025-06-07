@@ -16,8 +16,9 @@ RUN npm install
 # Step 5: Copy the entire app
 COPY . .
 
-# ✅ Create required folders (uploads and output)
+# Ensure folders exist inside the container
 RUN mkdir -p uploads output
+
 
 # Step 6: Set up a Python virtual environment and install requirements
 RUN python3 -m venv /venv && \
