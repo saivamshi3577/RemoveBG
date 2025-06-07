@@ -16,10 +16,6 @@ RUN npm install
 # Step 5: Copy the entire app
 COPY . .
 
-# Ensure folders exist inside the container
-RUN mkdir -p uploads output
-
-
 # Step 6: Set up a Python virtual environment and install requirements
 RUN python3 -m venv /venv && \
     /venv/bin/pip install --upgrade pip && \
@@ -31,5 +27,3 @@ ENV PATH="/venv/bin:$PATH"
 # Step 8: Expose port and start the app
 EXPOSE 3000
 CMD ["node", "app.js"]
-
-
