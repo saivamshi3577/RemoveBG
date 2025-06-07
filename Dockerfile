@@ -19,7 +19,7 @@ COPY . .
 # Step 6: Set up a Python virtual environment and install requirements
 RUN python3 -m venv /venv && \
     /venv/bin/pip install --upgrade pip && \
-    /venv/bin/pip install -r requirements.txt
+    /venv/bin/pip install --no-cache-dir --default-timeout=100 -r requirements.txt
 
 # Step 7: Set environment variable so Python and pip use the venv
 ENV PATH="/venv/bin:$PATH"
