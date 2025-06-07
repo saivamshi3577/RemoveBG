@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const removeRoute = require('./routes/removeRoute');
 
+
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -26,6 +27,10 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/output', express.static(path.join(__dirname, 'output')));
 app.use('/remove-bg', upload.single('image'), removeRoute);
+
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
