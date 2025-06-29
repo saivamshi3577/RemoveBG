@@ -20,7 +20,7 @@ cloudinary.config({
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '..', 'uploads');
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    fs.mkdirSync(uploadDir, { recursive: true });
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
@@ -36,10 +36,9 @@ router.post('/', upload.single('image'), (req, res) => {
 
   const inputPath = path.join(__dirname, '..', 'uploads', req.file.filename);
   const outputDir = path.join(__dirname, '..', 'output');
+  fs.mkdirSync(outputDir, { recursive: true });
   const outputFilename = req.file.filename.split('.')[0] + '-output.png';
   const outputPath = path.join(outputDir, outputFilename);
-
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
   execFile('python', [
     path.join(__dirname, '..', 'python', 'remove_bg.py'),
@@ -61,9 +60,13 @@ router.post('/', upload.single('image'), (req, res) => {
 
       console.log('✅ Uploaded to Cloudinary:', result.secure_url);
 
-      // Cleanup files
-      fs.unlinkSync(inputPath);
-      fs.unlinkSync(outputPath);
+      // ✅ Cleanup files after upload
+      try {
+        fs.unlinkSync(inputPath);
+        fs.unlinkSync(outputPath);
+      } catch (cleanupErr) {
+        console.warn('⚠️ Cleanup failed:', cleanupErr.message);
+      }
 
       res.json({ url: result.secure_url });
     } catch (err) {
