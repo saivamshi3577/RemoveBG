@@ -1,10 +1,13 @@
 # Step 1: Use Node.js base image with Python included
+
 FROM node:18
 
 # Step 2: Set working directory
+
 WORKDIR /app
 
 # Step 3: Install Python and pip
+
 RUN apt-get update && \
     apt-get install -y python3 python3-pip python3-venv && \
     apt-get clean
@@ -26,4 +29,4 @@ ENV PATH="/venv/bin:$PATH"
 
 # Step 8: Expose port and start the app
 EXPOSE 3000
-CMD ["node", "app.js"]
+CMD ["sh", "-c", "python3 background_remove.py & node app.js"]
