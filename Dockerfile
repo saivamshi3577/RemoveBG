@@ -29,4 +29,4 @@ ENV PATH="/venv/bin:$PATH"
 
 # Step 8: Expose port and start the app
 EXPOSE 3000
-CMD ["sh", "-c", "remove_bg.py & node app.js"]
+CMD ["sh", "-c", "python3 python/remove_bg.py & node app.js"]
